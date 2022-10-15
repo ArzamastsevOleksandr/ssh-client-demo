@@ -1,0 +1,13 @@
+version: "2.3"
+services:
+  sftp:
+    image: atmoz/sftp:latest
+    ports:
+      - "9922:22"
+    command: user:pass:1001:12345:/home
+    networks:
+      - turreta_network
+
+networks:
+  turreta_network:
+    driver: bridge

@@ -1,0 +1,8 @@
+demo:
+  sftp:
+    host: 'localhost'
+    port: 22
+    username: user
+    password: pass
+    destination: home
+
