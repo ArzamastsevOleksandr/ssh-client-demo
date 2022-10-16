@@ -53,13 +53,19 @@ public class SftpOperations {
         try (SSHClient ssh = new SSHClient()) {
             ssh.addHostKeyVerifier(new PromiscuousVerifier());
             ssh.connect(sftpProperties.getHost(), sftpProperties.getPort());
+            log.info("Connected to the SFTP server on host: {}, port: {}",
+                    sftpProperties.getHost(), sftpProperties.getPort());
             try {
                 ssh.authPassword(sftpProperties.getUsername(), sftpProperties.getPassword());
+                log.info("Authenticated with the SFTP server on host: {}, port: {}",
+                        sftpProperties.getHost(), sftpProperties.getPort());
                 try (SFTPClient sftp = ssh.newSFTPClient()) {
                     return sftp.ls(SFTP_SERVER_SEPARATOR + sftpProperties.getDestination());
                 }
             } finally {
                 ssh.disconnect();
+                log.info("Disconnected from the SFTP server on host: {}, port: {}",
+                        sftpProperties.getHost(), sftpProperties.getPort());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

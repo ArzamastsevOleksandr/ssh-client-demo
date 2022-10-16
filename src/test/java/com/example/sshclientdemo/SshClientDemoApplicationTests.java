@@ -43,9 +43,10 @@ class SshClientDemoApplicationTests {
             .withCommand("user:pass:::home");
 
     @BeforeAll
-    static void start() {
+    static void start() throws IOException {
         SFTP.start();
         tempFileToUpload = new File(tempDirectory, "tempFileToUpload.txt");
+        Files.write(tempFileToUpload.toPath(), List.of("Some", "dumb", "content"));
     }
 
     @AfterAll
@@ -54,9 +55,8 @@ class SshClientDemoApplicationTests {
     }
 
     @Test
-    void uploadFileToSftpAndVerifyItsPresence() throws IOException {
+    void uploadFileToSftpAndVerifyItsPresence() {
         // given
-        Files.write(tempFileToUpload.toPath(), List.of("Some", "dumb", "content"));
         assertThat(sftpOperations.listSftpResources()).isEmpty();
         // when
         sftpOperations.upload(tempFileToUpload.toPath());
